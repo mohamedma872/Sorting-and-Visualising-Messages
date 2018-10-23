@@ -7,14 +7,15 @@
 //
 
 import UIKit
-
+import MKDataDetector
+import CoreLocation
 class ViewController: UIViewController {
+
+    let dataDetectorService: MKDataDetectorService = MKDataDetectorService()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+     
     }
 
-
 }
-
