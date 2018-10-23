@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VariablesViewState
+   version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "ViewController.Getplaces(entry:):ViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "Messagemodel!">
+            </PersistentString>
+            <PersistentString
+               value = "messagelst">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "closure #1 in ViewController.GetPlaceCordinates(address:):ViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "messagelst">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+   </ContextStates>
+</VariablesViewState>

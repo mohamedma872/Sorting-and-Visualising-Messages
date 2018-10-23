@@ -59,8 +59,10 @@ struct Category: Codable {
 struct Entry: Codable {
     let id, updated: ID
     let category: [Category]
-    let title, content: Title
+    let title,
+    content: Title
     let link: [Link]
+   
 }
 
 struct Title: Codable {
