@@ -1,0 +1,16 @@
+PODS:
+  - MKDataDetector (2.0.2)
+
+DEPENDENCIES:
+  - MKDataDetector
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - MKDataDetector
+
+SPEC CHECKSUMS:
+  MKDataDetector: 23ccee9b629361e16faccfce055e25f3155efb7a
+
+PODFILE CHECKSUM: 1a0f491c224887df828bc744ba6d96f22c8ab01c
+
+COCOAPODS: 1.5.3
