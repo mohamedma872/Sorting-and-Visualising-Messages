@@ -221,3 +221,25 @@ extension ViewController {
 //        }
 //    }
 }
+extension ViewController : UICollectionViewDataSource {
+    //1
+     func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return messagelst.count
+    }
+    
+    //2
+     func collectionView(_ collectionView: UICollectionView,
+                                 numberOfItemsInSection section: Int) -> Int {
+        return messagelst.count
+    }
+    
+    //3
+     func collectionView(_ collectionView: UICollectionView,
+                                 cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "",
+                                                      for: indexPath)
+        cell.backgroundColor = UIColor.black
+        // Configure the cell
+        return cell
+    }
+}
