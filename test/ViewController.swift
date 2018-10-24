@@ -20,13 +20,6 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var collectionView: UICollectionView!
     
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        
-        if let flowLayout = self.collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
-            flowLayout.itemSize = CGSize(width: self.collectionView.bounds.width, height: 120)
-        }
-    }
     
     var data : [MessageModel] = [];
     override func viewDidLoad() {
@@ -39,9 +32,7 @@ class ViewController: UIViewController {
         let jsonDecoder = JSONDecoder()
         let obj = try? jsonDecoder.decode(Spreadsheet.self, from: jsonData)
         Feedobj = obj?.feed
-        data = messagelst.filterDuplicates { $0.sentiment == $1.sentiment  }
-        
-       
+  
         
         //extract places from messages
         Getplaces(entry: (Feedobj?.entry)!)
@@ -64,6 +55,8 @@ class ViewController: UIViewController {
             Messageobj = Messageobj.replacingOccurrences(of: "messageid", with: "\"messageid", options: .literal, range: nil)
             Messageobj = Messageobj.replacingOccurrences(of: "message", with: "\"message\"", options: .literal, range: nil)
             Messageobj = Messageobj.replacingOccurrences(of: "sentiment", with: "\"sentiment\"", options: .literal, range: nil)
+            self.messagelst.append(self.Messagemodel!)
+            
             //search for place name
             let tagger = NSLinguisticTagger(tagSchemes: [.nameType], options: 0)
             tagger.string = Messagemodel?.message
@@ -98,7 +91,9 @@ class ViewController: UIViewController {
             
             
         }
+        self.data = self.messagelst.filterDuplicates { $0.sentiment == $1.sentiment  }
         
+        self.collectionView.reloadData()
     }
     func GetPlaceCordinates(address : String)
     {
@@ -113,8 +108,8 @@ class ViewController: UIViewController {
             }
             self.Messagemodel?.Lat = location.coordinate.latitude
             self.Messagemodel?.lon = location.coordinate.longitude
-            self.messagelst.append(self.Messagemodel!)
-            
+          
+           
             // Use your location
         }
     }
