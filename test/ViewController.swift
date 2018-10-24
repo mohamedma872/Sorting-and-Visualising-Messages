@@ -230,7 +230,10 @@ extension ViewController : UICollectionViewDataSource {
     //2
      func collectionView(_ collectionView: UICollectionView,
                                  numberOfItemsInSection section: Int) -> Int {
-        return messagelst.count
+        
+        let filteredElements = messagelst.filterDuplicates { $0.sentiment == $1.sentiment  }
+
+        return filteredElements.count
     }
     
     //3
@@ -241,5 +244,22 @@ extension ViewController : UICollectionViewDataSource {
         cell.backgroundColor = UIColor.black
         // Configure the cell
         return cell
+    }
+}
+extension Array {
+    
+    func filterDuplicates( includeElement: (_ lhs:Element, _ rhs:Element) -> Bool) -> [Element]{
+        var results = [Element]()
+        
+        forEach { (element) in
+            let existingElements = results.filter {
+                return includeElement(element, $0)
+            }
+            if existingElements.count == 0 {
+                results.append(element)
+            }
+        }
+        
+        return results
     }
 }
