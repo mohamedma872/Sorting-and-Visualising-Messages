@@ -9,5 +9,15 @@
 import UIKit
 
 class collectionviewcustomecellCollectionViewCell: UICollectionViewCell {
-     @IBOutlet weak var textLabel: UILabel!
+    @IBOutlet var sentimentBtn: UIButton!
+   
+    func configrationCell (_ text : String)
+    {
+        sentimentBtn.layer.borderWidth = 1
+        sentimentBtn.layer.cornerRadius = 8
+        sentimentBtn.clipsToBounds = true
+        sentimentBtn.setTitle(text, for: .normal)
+        
+    }
+    
 }

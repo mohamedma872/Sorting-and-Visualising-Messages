@@ -28,7 +28,7 @@ class ViewController: UIViewController {
         }
     }
     
-    
+    var data : [MessageModel] = [];
     override func viewDidLoad() {
         super.viewDidLoad()
         //get data
@@ -39,6 +39,10 @@ class ViewController: UIViewController {
         let jsonDecoder = JSONDecoder()
         let obj = try? jsonDecoder.decode(Spreadsheet.self, from: jsonData)
         Feedobj = obj?.feed
+        data = messagelst.filterDuplicates { $0.sentiment == $1.sentiment  }
+        
+       
+        
         //extract places from messages
         Getplaces(entry: (Feedobj?.entry)!)
         
@@ -223,28 +227,49 @@ extension ViewController {
 }
 extension ViewController : UICollectionViewDataSource {
     //1
+   
      func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return messagelst.count
+        return 1
     }
     
     //2
      func collectionView(_ collectionView: UICollectionView,
                                  numberOfItemsInSection section: Int) -> Int {
         
-        let filteredElements = messagelst.filterDuplicates { $0.sentiment == $1.sentiment  }
-
-        return filteredElements.count
+       
+        return data.count
     }
     
-    //3
-     func collectionView(_ collectionView: UICollectionView,
-                                 cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "",
-                                                      for: indexPath)
-        cell.backgroundColor = UIColor.black
-        // Configure the cell
-        return cell
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "collectionviewcustomecellCollectionViewCell", for: indexPath) as! collectionviewcustomecellCollectionViewCell
+        cell.configrationCell(data[indexPath.row].sentiment!)
+        
+        return cell;
+        
+        
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        let cell = collectionView.cellForItem(at: indexPath) as! collectionviewcustomecellCollectionViewCell
+        cell.sentimentBtn.backgroundColor = UIColor(named: "SelectedItem")
+        cell.sentimentBtn.layer.borderColor = UIColor(named: "SelectedItem")?.cgColor
+        
+        
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        if let cell =  collectionView.cellForItem(at: indexPath)
+        {
+            let customeCell =  cell as! collectionviewcustomecellCollectionViewCell
+            customeCell.sentimentBtn.backgroundColor = UIColor(named: "ProjectColor")
+            customeCell.sentimentBtn.layer.borderColor = UIColor(named: "ProjectColor")?.cgColor
+        }
+        
+    }
+    
 }
 extension Array {
     

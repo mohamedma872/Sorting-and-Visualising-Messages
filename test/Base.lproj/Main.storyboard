@@ -5,6 +5,7 @@
     </device>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -41,16 +42,26 @@
                                             <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vl2-xQ-8qc">
-                                                    <rect key="frame" x="4" y="15" width="42" height="21"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <color key="backgroundColor" red="0.21264194733751995" green="0.29795798100654713" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tk3-kP-VcF">
+                                                    <rect key="frame" x="2" y="2" width="46" height="42"/>
+                                                    <color key="backgroundColor" name="ProjectColor"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="42" id="dbL-8n-KQg"/>
+                                                    </constraints>
+                                                    <state key="normal" title="Button">
+                                                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    </state>
+                                                </button>
                                             </subviews>
                                         </view>
+                                        <constraints>
+                                            <constraint firstItem="tk3-kP-VcF" firstAttribute="top" secondItem="793-4I-uuD" secondAttribute="top" constant="2" id="6P8-f4-dbO"/>
+                                            <constraint firstItem="tk3-kP-VcF" firstAttribute="leading" secondItem="793-4I-uuD" secondAttribute="leading" constant="2" id="A2S-dA-P4k"/>
+                                            <constraint firstAttribute="trailing" secondItem="tk3-kP-VcF" secondAttribute="trailing" constant="2" id="gPe-1m-eA8"/>
+                                        </constraints>
+                                        <connections>
+                                            <outlet property="sentimentBtn" destination="tk3-kP-VcF" id="l93-Px-lWw"/>
+                                        </connections>
                                     </collectionViewCell>
                                 </cells>
                                 <connections>
@@ -78,4 +89,9 @@
             <point key="canvasLocation" x="-82.400000000000006" y="95.802098950524751"/>
         </scene>
     </scenes>
+    <resources>
+        <namedColor name="ProjectColor">
+            <color red="0.30588235294117649" green="0.22745098039215686" blue="0.31372549019607843" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
 </document>
