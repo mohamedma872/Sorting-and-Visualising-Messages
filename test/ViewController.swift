@@ -16,6 +16,19 @@ class ViewController: UIViewController {
     var Feedobj : Feed?
     var Messagemodel : MessageModel?
     var messagelst : [MessageModel] = []
+    
+    
+    @IBOutlet weak var collectionView: UICollectionView!
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        if let flowLayout = self.collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
+            flowLayout.itemSize = CGSize(width: self.collectionView.bounds.width, height: 120)
+        }
+    }
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         //get data
