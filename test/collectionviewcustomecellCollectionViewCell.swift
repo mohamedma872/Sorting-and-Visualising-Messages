@@ -10,7 +10,7 @@ import UIKit
 
 class collectionviewcustomecellCollectionViewCell: UICollectionViewCell {
     @IBOutlet var sentimentBtn: UIButton!
-   
+
     func configrationCell (_ text : String)
     {
         sentimentBtn.layer.borderWidth = 1
@@ -18,6 +18,16 @@ class collectionviewcustomecellCollectionViewCell: UICollectionViewCell {
         sentimentBtn.clipsToBounds = true
         sentimentBtn.setTitle(text, for: .normal)
         
+    }
+    
+    override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
+        setNeedsLayout()
+        layoutIfNeeded()
+        let size = contentView.systemLayoutSizeFitting(layoutAttributes.size)
+        var frame = layoutAttributes.frame
+        frame.size.height = ceil(size.height)
+        layoutAttributes.frame = frame
+        return layoutAttributes
     }
     
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
-    <device id="retina4_7" orientation="portrait">
+    <device id="retina6_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
@@ -15,20 +15,22 @@
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="test" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" showsScale="YES" showsTraffic="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lXM-6K-d1e">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                                 <connections>
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="CYz-DP-RZS"/>
                                 </connections>
                             </mapView>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="vJ2-xJ-OwE">
-                                <rect key="frame" x="0.0" y="607" width="375" height="60"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Po7-i7-Dya">
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" springLoaded="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vJ2-xJ-OwE">
+                                <rect key="frame" x="20" y="810" width="374" height="60"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="60" id="LT4-Oc-2TT"/>
+                                </constraints>
+                                <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="egb-yY-Wd5">
                                     <size key="itemSize" width="50" height="50"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
@@ -72,10 +74,14 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="lXM-6K-d1e" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="EZU-bf-HEd"/>
-                            <constraint firstItem="lXM-6K-d1e" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="lM6-Rd-ED6"/>
-                            <constraint firstItem="lXM-6K-d1e" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="mvb-Cq-Jf9"/>
-                            <constraint firstItem="lXM-6K-d1e" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="w2e-7I-d5H"/>
+                            <constraint firstItem="lXM-6K-d1e" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="5cA-vN-5Ga"/>
+                            <constraint firstItem="vJ2-xJ-OwE" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="LGL-eh-kBY"/>
+                            <constraint firstAttribute="bottom" secondItem="vJ2-xJ-OwE" secondAttribute="bottom" constant="26" id="Q6W-bG-I2Q"/>
+                            <constraint firstItem="lXM-6K-d1e" firstAttribute="centerX" secondItem="vJ2-xJ-OwE" secondAttribute="centerX" id="RvW-2z-tg6"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="vJ2-xJ-OwE" secondAttribute="trailing" constant="20" id="XSe-qz-CV4"/>
+                            <constraint firstAttribute="bottom" secondItem="lXM-6K-d1e" secondAttribute="bottom" id="erz-Vf-opb"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="top" secondItem="lXM-6K-d1e" secondAttribute="bottom" constant="-852" id="ix5-9g-Zhb"/>
+                            <constraint firstItem="lXM-6K-d1e" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="tHS-Y1-Afi"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
@@ -86,7 +92,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-82.400000000000006" y="95.802098950524751"/>
+            <point key="canvasLocation" x="-82.608695652173921" y="95.758928571428569"/>
         </scene>
     </scenes>
     <resources>

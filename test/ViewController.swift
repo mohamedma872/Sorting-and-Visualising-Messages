@@ -19,11 +19,13 @@ class ViewController: UIViewController {
     
     
     @IBOutlet weak var collectionView: UICollectionView!
-    
+
     
     var data : [MessageModel] = [];
     override func viewDidLoad() {
         super.viewDidLoad()
+        // For completeness the section insets need to be accommodated
+       
         //get data
         let sampleDataAddress = "https://spreadsheets.google.com/feeds/list/0Ai2EnLApq68edEVRNU0xdW9QX1BqQXhHRl9sWDNfQXc/od6/public/basic?alt=json"
         let url = URL(string: sampleDataAddress)!
@@ -126,100 +128,20 @@ extension String {
         }
     }
 }
-extension ViewController: MKMapViewDelegate {
-//    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-//        if let annotation = annotation as? ClusterAnnotation {
-//            let index = segmentedControl.selectedSegmentIndex
-//            let identifier = "Cluster\(index)"
-//            let annotationView: MKAnnotationView
-//            if let existingView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier) {
-//                annotationView = existingView
-//            } else {
-//                let selection = Selection(rawValue: index)!
-//                annotationView = selection.annotationView(annotation: annotation, reuseIdentifier: identifier)
-//            }
-//            annotationView.annotation = annotation
-//            return annotationView
-//        } else if let annotation = annotation as? MeAnnotation {
-//            let identifier = "Me"
-//            let annotationView: MKAnnotationView
-//            if let existingView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier) {
-//                annotationView = existingView
-//            } else {
-//                annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: identifier)
-//                annotationView.image = .me
-//            }
-//            annotationView.annotation = annotation
-//            return annotationView
-//        } else {
-//            let identifier = "Pin"
-//            let annotationView: MKPinAnnotationView
-//            if let existingView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? MKPinAnnotationView {
-//                annotationView = existingView
-//            } else {
-//                annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: identifier)
-//                annotationView.pinTintColor = .green
-//            }
-//            annotationView.annotation = annotation
-//            return annotationView
-//        }
-//    }
-//
-//    func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
-//        manager.reload(mapView: mapView) { finished in
-//            print(finished)
-//        }
-//    }
-//
-//    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-//        guard let annotation = view.annotation else { return }
-//
-//        if let cluster = annotation as? ClusterAnnotation {
-//            var zoomRect = MKMapRect.null
-//            for annotation in cluster.annotations {
-//                let annotationPoint = MKMapPoint(annotation.coordinate)
-//                let pointRect = MKMapRect(x: annotationPoint.x, y: annotationPoint.y, width: 0, height: 0)
-//                if zoomRect.isNull {
-//                    zoomRect = pointRect
-//                } else {
-//                    zoomRect = zoomRect.union(pointRect)
-//                }
-//            }
-//            mapView.setVisibleMapRect(zoomRect, animated: true)
-//        }
-//    }
-//
-//    func mapView(_ mapView: MKMapView, didAdd views: [MKAnnotationView]) {
-//        views.forEach { $0.alpha = 0 }
-//        UIView.animate(withDuration: 0.35, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: [], animations: {
-//            views.forEach { $0.alpha = 1 }
-//        }, completion: nil)
-//}
-}
-
-extension ViewController {
-//    enum Selection: Int {
-//        case count, imageCount, image
+//extension ViewController : UICollectionViewDelegateFlowLayout
+//{
+////    Option 3: Reacting to Rotations
+////    In iOS 8, the willRotateToInterfaceOrientation(...) and didRotateFromInterfaceOrientation(...) methods on UIViewController were deprecated in favor of viewWillTransitionToSize(...).
+////
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize
+//    {
 //        
-//        func annotationView(annotation: MKAnnotation?, reuseIdentifier: String?) -> MKAnnotationView {
-//            switch self {
-//            case .count:
-//                let annotationView = CountClusterAnnotationView(annotation: annotation, reuseIdentifier: reuseIdentifier)
-//                annotationView.countLabel.backgroundColor = .green
-//                return annotationView
-//            case .imageCount:
-//                let annotationView = ImageCountClusterAnnotationView(annotation: annotation, reuseIdentifier: reuseIdentifier)
-//                annotationView.countLabel.textColor = .green
-//                annotationView.image = .pin2
-//                return annotationView
-//            case .image:
-//                let annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: reuseIdentifier)
-//                annotationView.image = .pin
-//                return annotationView
-//            }
-//        }
+//        let size = (data[indexPath.row].sentiment! as NSString).size(withAttributes: nil)
+//
+//        
+//        return size
 //    }
-}
+//}
 extension ViewController : UICollectionViewDataSource {
     //1
    
