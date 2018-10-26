@@ -10,13 +10,15 @@ import UIKit
 
 class collectionviewcustomecellCollectionViewCell: UICollectionViewCell {
     @IBOutlet var sentimentBtn: UIButton!
+    @IBOutlet var img: UIImageView!
 
-    func configrationCell (_ text : String)
+    func configrationCell (_ text : String,customimg : String)
     {
         sentimentBtn.layer.borderWidth = 1
-        sentimentBtn.layer.cornerRadius = 8
+        sentimentBtn.layer.cornerRadius = 15
         sentimentBtn.clipsToBounds = true
         sentimentBtn.setTitle(text, for: .normal)
+       img.image = UIImage(named: customimg)
         
     }
     

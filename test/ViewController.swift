@@ -9,6 +9,8 @@
 import UIKit
 import CoreLocation
 import MapKit
+import JGProgressHUD
+
 class ViewController: UIViewController {
     //  MARK: Properties
     ///    Displays the rappers in a map.
@@ -20,11 +22,14 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var collectionView: UICollectionView!
 
-    
+     let hud = JGProgressHUD(style: .dark)
     var data : [MessageModel] = [];
     override func viewDidLoad() {
         super.viewDidLoad()
         // For completeness the section insets need to be accommodated
+       
+        hud.textLabel.text = "Loading"
+        hud.show(in: self.view)
        
         //get data
         let sampleDataAddress = "https://spreadsheets.google.com/feeds/list/0Ai2EnLApq68edEVRNU0xdW9QX1BqQXhHRl9sWDNfQXc/od6/public/basic?alt=json"
@@ -34,8 +39,6 @@ class ViewController: UIViewController {
         let jsonDecoder = JSONDecoder()
         let obj = try? jsonDecoder.decode(Spreadsheet.self, from: jsonData)
         Feedobj = obj?.feed
-  
-        
         //extract places from messages
         Getplaces(entry: (Feedobj?.entry)!)
         
@@ -57,6 +60,17 @@ class ViewController: UIViewController {
             Messageobj = Messageobj.replacingOccurrences(of: "messageid", with: "\"messageid", options: .literal, range: nil)
             Messageobj = Messageobj.replacingOccurrences(of: "message", with: "\"message\"", options: .literal, range: nil)
             Messageobj = Messageobj.replacingOccurrences(of: "sentiment", with: "\"sentiment\"", options: .literal, range: nil)
+            if(self.Messagemodel!.sentiment == "Neutral")
+            {
+                self.Messagemodel!.customimage = "map_normal"
+            }else if (self.Messagemodel!.sentiment == "Negative")
+            {
+                self.Messagemodel!.customimage = "map_sad"
+            }else if (self.Messagemodel!.sentiment == "Positive")
+                
+            {
+                self.Messagemodel!.customimage = "map_smile"
+            }
             self.messagelst.append(self.Messagemodel!)
             
             //search for place name
@@ -87,30 +101,51 @@ class ViewController: UIViewController {
             {
                 //add message model to list
                 Messagemodel?.PlaceName = name
-                GetPlaceCordinates(address: name)
+                GetPlaceCordinates(Messagemodell: Messagemodel!)
                 
+            }else
+            {
+                
+                //not found place
+                 Messagemodel?.PlaceName = "not found place"
             }
             
             
+            
+            
         }
+        //filter dublicates in grouping
         self.data = self.messagelst.filterDuplicates { $0.sentiment == $1.sentiment  }
-        
         self.collectionView.reloadData()
+        //dismiss the loader
+         hud.dismiss(afterDelay: 2.0)
     }
-    func GetPlaceCordinates(address : String)
+    func GetPlaceCordinates(Messagemodell : MessageModel)
     {
         let geoCoder = CLGeocoder()
-        geoCoder.geocodeAddressString(address) { (placemarks, error) in
+        geoCoder.geocodeAddressString(Messagemodell.PlaceName!) { (placemarks, error) in
             guard
                 let placemarks = placemarks,
                 let location = placemarks.first?.location
                 else {
                     // handle no location found
+                     print("error in gecoding")
                     return
             }
-            self.Messagemodel?.Lat = location.coordinate.latitude
-            self.Messagemodel?.lon = location.coordinate.longitude
-          
+             Messagemodell.coordinate.latitude = location.coordinate.latitude
+            Messagemodell.coordinate.longitude = location.coordinate.longitude
+             print("\(location.coordinate.latitude)")
+           
+            Messagemodell.title = Messagemodell.PlaceName
+            Messagemodell.subtitle = Messagemodell.message
+            
+            //update list
+            self.messagelst.first(where: {$0.messageid == Messagemodell.messageid})?.coordinate.latitude = location.coordinate.latitude
+            self.messagelst.first(where: {$0.messageid == Messagemodell.messageid})?.coordinate.longitude = location.coordinate.longitude
+            self.messagelst.first(where: {$0.messageid == Messagemodell.messageid})?.PlaceName = Messagemodell.PlaceName
+            self.messagelst.first(where: {$0.messageid == Messagemodell.messageid})?.title = Messagemodell.PlaceName
+             self.messagelst.first(where: {$0.messageid == Messagemodell.messageid})?.subtitle = Messagemodell.message
+            self.mapView.addAnnotation(Messagemodell)
            
             // Use your location
         }
@@ -128,20 +163,30 @@ extension String {
         }
     }
 }
-//extension ViewController : UICollectionViewDelegateFlowLayout
-//{
-////    Option 3: Reacting to Rotations
-////    In iOS 8, the willRotateToInterfaceOrientation(...) and didRotateFromInterfaceOrientation(...) methods on UIViewController were deprecated in favor of viewWillTransitionToSize(...).
-////
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize
-//    {
-//        
-//        let size = (data[indexPath.row].sentiment! as NSString).size(withAttributes: nil)
-//
-//        
-//        return size
-//    }
-//}
+extension ViewController: MKMapViewDelegate {
+    // 1
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        // 2
+        guard let annotation = annotation as? MessageModel else { return nil }
+        // 3
+        let reuseIdentifier = "pin"
+        var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseIdentifier)
+        
+        if annotationView == nil {
+            annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: reuseIdentifier)
+            annotationView?.canShowCallout = true
+        } else {
+            annotationView?.annotation = annotation
+        }
+        
+        let customPointAnnotation = annotation as! MessageModel
+        annotationView?.image = UIImage(named: customPointAnnotation.customimage!)
+        
+        return annotationView
+       
+    }
+}
+
 extension ViewController : UICollectionViewDataSource {
     //1
    
@@ -161,8 +206,8 @@ extension ViewController : UICollectionViewDataSource {
         
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "collectionviewcustomecellCollectionViewCell", for: indexPath) as! collectionviewcustomecellCollectionViewCell
-        cell.configrationCell(data[indexPath.row].sentiment!)
-        
+        cell.configrationCell(data[indexPath.row].sentiment!,customimg: data[indexPath.row].customimage!)
+
         return cell;
         
         
@@ -183,6 +228,8 @@ extension ViewController : UICollectionViewDataSource {
             let customeCell =  cell as! collectionviewcustomecellCollectionViewCell
             customeCell.sentimentBtn.backgroundColor = UIColor(named: "ProjectColor")
             customeCell.sentimentBtn.layer.borderColor = UIColor(named: "ProjectColor")?.cgColor
+            
+            
         }
         
     }

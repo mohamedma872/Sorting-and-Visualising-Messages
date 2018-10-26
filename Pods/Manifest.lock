@@ -1,16 +1,16 @@
 PODS:
-  - MKDataDetector (2.0.2)
+  - JGProgressHUD (2.0.3)
 
 DEPENDENCIES:
-  - MKDataDetector
+  - JGProgressHUD
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
-    - MKDataDetector
+    - JGProgressHUD
 
 SPEC CHECKSUMS:
-  MKDataDetector: 23ccee9b629361e16faccfce055e25f3155efb7a
+  JGProgressHUD: 12b20a8f4ffe05258f8635c1ab92816e451f904d
 
-PODFILE CHECKSUM: 1a0f491c224887df828bc744ba6d96f22c8ab01c
+PODFILE CHECKSUM: f48fdb2dcd305739ca576f3f478c525fb8347282
 
 COCOAPODS: 1.5.3
