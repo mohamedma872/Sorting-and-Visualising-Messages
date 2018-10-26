@@ -146,11 +146,28 @@ class ViewController: UIViewController {
             self.messagelst.first(where: {$0.messageid == Messagemodell.messageid})?.title = Messagemodell.PlaceName
              self.messagelst.first(where: {$0.messageid == Messagemodell.messageid})?.subtitle = Messagemodell.message
             self.mapView.addAnnotation(Messagemodell)
-           
+            self.fitMapViewToAnnotaionList(annotations: self.messagelst)
             // Use your location
         }
     }
-    
+    func fitMapViewToAnnotaionList(annotations: [MKPointAnnotation]) -> Void {
+        let mapEdgePadding = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
+        var zoomRect:MKMapRect = MKMapRect.null
+        
+        for index in 0..<annotations.count {
+            let annotation = annotations[index]
+            let aPoint:MKMapPoint = MKMapPoint(annotation.coordinate)
+            let rect:MKMapRect = MKMapRect(x: aPoint.x, y: aPoint.y, width: 0.1, height: 0.1)
+            
+            if zoomRect.isNull {
+                zoomRect = rect
+            } else {
+                zoomRect = zoomRect.union(rect)
+            }
+        }
+        
+        mapView.setVisibleMapRect(zoomRect, edgePadding: mapEdgePadding, animated: true)
+    }
 }
 extension String {
     
