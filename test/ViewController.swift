@@ -11,6 +11,14 @@ import CoreLocation
 import MapKit
 import JGProgressHUD
 
+
+
+enum messagesError: Error {
+    case Codableeror
+    case downloaderor
+    
+}
+
 class ViewController: UIViewController {
     //  MARK: Properties
     ///    Displays the rappers in a map.
@@ -18,7 +26,6 @@ class ViewController: UIViewController {
     var Feedobj : Feed?
     var Messagemodel : MessageModel?
     var messagelst : [MessageModel] = []
-    
     
     @IBOutlet weak var collectionView: UICollectionView!
 
@@ -30,18 +37,63 @@ class ViewController: UIViewController {
        
         hud.textLabel.text = "Loading"
         hud.show(in: self.view)
+        do{
+             //get data
+            let sampleDataAddress = "https://spreadsheets.google.com/feeds/list/0Ai2EnLApq68edEVRNU0xdW9QX1BqQXhHRl9sWDNfQXc/od6/public/basic?alt=json"
+            let url = URL(string: sampleDataAddress)!
+            
+            let jsonData = try! Data(contentsOf: url)
+            
+            //decode data
+            let jsonDecoder = JSONDecoder()
+            let obj = try? jsonDecoder.decode(Spreadsheet.self, from: jsonData)
+            //make check
+            if let feedobj = obj {
+                Feedobj = feedobj.feed
+                //extract places from messages
+                Getplaces(entry: (Feedobj?.entry)!)
+            }else
+            {
+                
+                
+                throw messagesError.Codableeror
+                
+            }
+           
+        }catch{
+            
+            print("error happen\(error)")
+        }
        
-        //get data
-        let sampleDataAddress = "https://spreadsheets.google.com/feeds/list/0Ai2EnLApq68edEVRNU0xdW9QX1BqQXhHRl9sWDNfQXc/od6/public/basic?alt=json"
-        let url = URL(string: sampleDataAddress)!
-        let jsonData = try! Data(contentsOf: url)
-        //decode data
-        let jsonDecoder = JSONDecoder()
-        let obj = try? jsonDecoder.decode(Spreadsheet.self, from: jsonData)
-        Feedobj = obj?.feed
-        //extract places from messages
-        Getplaces(entry: (Feedobj?.entry)!)
+       
         
+    }
+    func preparethemodel(text : String) -> MessageModel {
+        Messagemodel = MessageModel()
+        //obtain model class
+        var Messageobj : String = text
+        Messagemodel?.message = Messageobj.slice(from: "message:", to: ", sentiment")
+        Messagemodel?.messageid = Int (Messageobj.slice(from: "messageid: ", to: ", ")!)
+        if let range = Messageobj.range(of: "sentiment: ") {
+            Messagemodel?.sentiment = Messageobj[range.upperBound...].trimmingCharacters(in: .whitespaces)
+        }
+        Messageobj = Messageobj.replacingOccurrences(of: "messageid", with: "\"messageid", options: .literal, range: nil)
+        Messageobj = Messageobj.replacingOccurrences(of: "message", with: "\"message\"", options: .literal, range: nil)
+        Messageobj = Messageobj.replacingOccurrences(of: "sentiment", with: "\"sentiment\"", options: .literal, range: nil)
+        if(self.Messagemodel!.sentiment == "Neutral")
+        {
+            self.Messagemodel!.customimage = "map_normal"
+        }else if (self.Messagemodel!.sentiment == "Negative")
+        {
+            self.Messagemodel!.customimage = "map_sad"
+        }else if (self.Messagemodel!.sentiment == "Positive")
+            
+        {
+            self.Messagemodel!.customimage = "map_smile"
+        }
+        self.messagelst.append(self.Messagemodel!)
+        
+        return Messagemodel!
     }
     func Getplaces(entry : [Entry]){
         
@@ -49,29 +101,7 @@ class ViewController: UIViewController {
         
         for text in entry{
             //init new object from Message Model
-            Messagemodel = MessageModel()
-            //obtain model class
-            var Messageobj : String = text.content.t
-            Messagemodel?.message = Messageobj.slice(from: "message:", to: ", sentiment")
-            Messagemodel?.messageid = Int (Messageobj.slice(from: "messageid: ", to: ", ")!)
-            if let range = Messageobj.range(of: "sentiment: ") {
-                Messagemodel?.sentiment = Messageobj[range.upperBound...].trimmingCharacters(in: .whitespaces)
-            }
-            Messageobj = Messageobj.replacingOccurrences(of: "messageid", with: "\"messageid", options: .literal, range: nil)
-            Messageobj = Messageobj.replacingOccurrences(of: "message", with: "\"message\"", options: .literal, range: nil)
-            Messageobj = Messageobj.replacingOccurrences(of: "sentiment", with: "\"sentiment\"", options: .literal, range: nil)
-            if(self.Messagemodel!.sentiment == "Neutral")
-            {
-                self.Messagemodel!.customimage = "map_normal"
-            }else if (self.Messagemodel!.sentiment == "Negative")
-            {
-                self.Messagemodel!.customimage = "map_sad"
-            }else if (self.Messagemodel!.sentiment == "Positive")
-                
-            {
-                self.Messagemodel!.customimage = "map_smile"
-            }
-            self.messagelst.append(self.Messagemodel!)
+       _ =    preparethemodel(text: text.content.t)
             
             //search for place name
             let tagger = NSLinguisticTagger(tagSchemes: [.nameType], options: 0)
@@ -110,7 +140,7 @@ class ViewController: UIViewController {
                  Messagemodel?.PlaceName = "not found place"
             }
             
-            
+            //
             
             
         }
