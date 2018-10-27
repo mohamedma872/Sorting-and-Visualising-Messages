@@ -226,7 +226,7 @@ extension ViewController: MKMapViewDelegate {
             annotationView?.annotation = annotation
         }
         
-        let customPointAnnotation = annotation as! MessageModel
+        let customPointAnnotation = annotation 
         annotationView?.image = UIImage(named: customPointAnnotation.customimage!)
         
         return annotationView
